@@ -5,3 +5,5 @@ next-env.d.ts
 *.tsbuildinfo
 .DS_Store
 .claude/
+# Fonts kept on this machine only, for trying them out (not ours to serve).
+/public/fonts-local/

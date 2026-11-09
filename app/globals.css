@@ -88,6 +88,25 @@ html.fk body {
   font-family: "FK Roman", "Times for FK Roman", "Times New Roman", Times, serif;
 }
 
+/*
+ * Trying Legitima (César Puertas) for the page's text, from a copy kept on this machine only:
+ * public/fonts-local/ is gitignored, since the font isn't ours to serve. Only its Regular is
+ * here, so bold and italic are the browser's own slanting and thickening. Delete this block to
+ * go back to FK Roman.
+ */
+@font-face {
+  font-family: "Legitima";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Legitima"), local("Legitima-Regular"), url("/fonts-local/Legitima-Regular.ttf") format("truetype");
+  /* Its letters run small (an x-height about 18% under FK Roman's), so it's drawn larger. */
+  size-adjust: 112%;
+}
+html body.font-serif,
+html.fk body {
+  font-family: "Legitima", "Times New Roman", Times, serif;
+}
+
 @theme inline {
   --font-serif: "FK Roman", "Times New Roman", Times, serif;
   --color-paper: var(--paper);
@@ -100,15 +119,21 @@ html.fk body {
  */
 :root {
   color-scheme: light;
-  --paper: #ffffff;
-  --ink: #1d1d1b;
+  /* A warm off-white and a warm near-black, after cursor.com's light theme (its #f7f7f4, a touch lighter). The contour lines are
+     this ink at low opacity (components/field/), so they share its hue. */
+  --paper: #fafaf8;
+  --ink: #26251e;
+  /* The two accent colors: on the sculpture's sheets, and now and then flashing along a contour
+     line. */
+  --orange: #ee542f;
+  --teal: #087f83;
 
-  /* The arms, and the sheets' three text colors: teal (the main one), coral (one sheet), and a
-     blue-black. */
+  /* The arms, and the sheets' three text colors: teal, an orange (one sheet, under the key
+     "coral"), and a warm brown-gray (under the key "ink"). */
   --mobile-wire: #2b2a27;
-  --mobile-ink: #233650;
-  --mobile-teal: #087f8c;
-  --mobile-coral: #d44c68;
+  --mobile-ink: #4a433c;
+  --mobile-teal: var(--teal);
+  --mobile-coral: var(--orange);
   /* The strings (the thread and the hooks), set apart from the arms by color. */
   --mobile-string: #a8a39a;
   /* The page background, for the canvas. */

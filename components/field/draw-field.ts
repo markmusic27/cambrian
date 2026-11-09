@@ -7,11 +7,12 @@
  * periods. Every frame only decides how dark each one is:
  *
  *   - clear of the text (following its lines) and the sculpture, each with a soft edge that
- *     wanders in and out, so the page reads as text on white with the texture coming in
+ *     wanders in and out, so the page reads as text on paper with the texture coming in
  *     around it;
- *   - fading to white and back as soft waves run along its line;
+ *   - fading out and back as soft waves run along its line;
  *   - darker in the wake of a sheet moving toward it (the sculpture's positions come from
- *     components/mobile/live.ts).
+ *     components/mobile/live.ts);
+ *   - and, rarely, a whole line flashing one of the accent colors.
  *
  * Each character is copied from a sheet of sprites drawn once: on the GPU where it can
  * (gl-glyphs.ts), all in one go, or else on the 2D canvas.
@@ -54,13 +55,18 @@ function segmentDistance(x: number, y: number, ax: number, ay: number, bx: numbe
   return Math.hypot(x - ax - t * dx, y - ay - t * dy);
 }
 
-export function runField(canvas: HTMLCanvasElement): () => void {
-  // The GPU draws the characters where it can (gl-glyphs.ts); otherwise, and while the clear
-  // space is shown in red, the 2D canvas does.
-  const layer = FIELD.showClearing ? null : glyphLayer(canvas);
+/**
+ * `still`: drawn once, held still, on the 2D canvas (the share image, app/thumbnail, so it can
+ * be captured).
+ */
+export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}): () => void {
+  // The GPU draws the characters where it can (gl-glyphs.ts); otherwise, while the clear
+  // space is shown in red, and when held still, the 2D canvas does.
+  const layer = FIELD.showClearing || held ? null : glyphLayer(canvas);
   const ctx = layer ? null : canvas.getContext("2d");
   if (!layer && !ctx) return () => {};
-  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const motion = matchMedia("(prefers-reduced-motion: reduce)");
+  const reduceMotion = { get matches() { return held || motion.matches; } };
 
   const height = makeTerrain();
   const G = FIELD.glyph;
@@ -82,7 +88,7 @@ export function runField(canvas: HTMLCanvasElement): () => void {
   let W = 0;
   let H = 0;
   let dpr = 1;
-  let ink = "#1d1d1b";
+  let ink = "#26251e";
 
   // The characters: where each sits (CSS px, and its corner in device px), which sprite it
   // is, the line it's on and how far along it, and a fixed wobble for the edge of the
@@ -102,11 +108,20 @@ export function runField(canvas: HTMLCanvasElement): () => void {
   let lineK = new Float32Array(0);
   let linePhase = new Float32Array(0);
   let lineRate = new Float32Array(0);
+  // The flashes under way (FIELD.flash), and per line this frame how far into its color it
+  // is and which color; per character, the same two numbers for the GPU.
+  let flashes: { line: number; start: number; hue: number }[] = [];
+  let lineFlash = new Float32Array(0);
+  let lineHue = new Float32Array(0);
+  let TINT = new Float32Array(0);
+  let tinted = false; // whether TINT holds any color, so it needs clearing when the flashes end
+  let clock = 0; // seconds, from the animation frames
 
   // The sprites: a dash turned to each of ANGLES directions and a period, drawn once
-  // in the typewriter face and copied into place.
+  // in the typewriter face and copied into place, and a soft round glow (for the flashes).
   const ANGLES = 24;
   const DOT = ANGLES;
+  const GLOW = ANGLES + 1;
   let atlas: HTMLCanvasElement | null = null;
   let cellPx = 0;
   const font = (px: number) => `${px}px "CMU Typewriter", ui-monospace, "SF Mono", Menlo, monospace`;
@@ -115,7 +130,7 @@ export function runField(canvas: HTMLCanvasElement): () => void {
     const size = G.size * dpr;
     cellPx = 2 * Math.ceil(size * 0.7);
     atlas = document.createElement("canvas");
-    atlas.width = cellPx * (ANGLES + 1);
+    atlas.width = cellPx * (GLOW + 1);
     atlas.height = cellPx;
     const g = atlas.getContext("2d")!;
     g.fillStyle = ink;
@@ -131,7 +146,14 @@ export function runField(canvas: HTMLCanvasElement): () => void {
     };
     for (let a = 0; a < ANGLES; a++) put(a, "-", (a / ANGLES) * Math.PI);
     put(DOT, ".", 0);
-    layer?.setAtlas(atlas, cellPx, ANGLES + 1, ink);
+    const r = cellPx / 2;
+    const halo = g.createRadialGradient(GLOW * cellPx + r, r, 0, GLOW * cellPx + r, r, r);
+    halo.addColorStop(0, "rgba(0,0,0,1)");
+    halo.addColorStop(0.4, "rgba(0,0,0,0.45)");
+    halo.addColorStop(1, "rgba(0,0,0,0)");
+    g.fillStyle = halo;
+    g.fillRect(GLOW * cellPx, 0, cellPx, cellPx);
+    layer?.setAtlas(atlas, cellPx, GLOW + 1, ink);
     dirty = true;
   }
 
@@ -349,6 +371,9 @@ export function runField(canvas: HTMLCanvasElement): () => void {
       linePhase[l] = hash(l + 211) * TAU;
       lineRate[l] = 1 + FIELD.wave.vary * (2 * hash(l + 401) - 1);
     }
+    flashes = [];
+    lineFlash = new Float32Array(n);
+    lineHue = new Float32Array(n);
   }
 
   /** Where each character's sprite goes, in device px. */
@@ -361,6 +386,8 @@ export function runField(canvas: HTMLCanvasElement): () => void {
       DY[i] = Math.round(Y[i] * dpr) - half;
     }
     ALPHA = new Float32Array(count);
+    TINT = new Float32Array(count * 2);
+    tinted = false;
     layer?.setGlyphs(DX, DY, KIND);
   }
 
@@ -371,7 +398,9 @@ export function runField(canvas: HTMLCanvasElement): () => void {
     dpr = Math.min(2, window.devicePixelRatio || 1);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
-    ink = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || ink;
+    const css = getComputedStyle(document.documentElement);
+    ink = css.getPropertyValue("--ink").trim() || ink;
+    layer?.setHues(css.getPropertyValue("--orange").trim(), css.getPropertyValue("--teal").trim());
 
     trace();
     drawAtlas();
@@ -646,6 +675,20 @@ export function runField(canvas: HTMLCanvasElement): () => void {
   // How far the waves have run (radians), advanced each frame.
   let drift = 0;
 
+  /** Now and then starts a flash on a line that's showing (one not cleared away). */
+  function spark(dt: number) {
+    const F = FIELD.flash;
+    if (!count || Math.random() >= dt / F.every) return;
+    for (let tries = 0; tries < 12; tries++) {
+      const i = (Math.random() * count) | 0;
+      if (ALPHA[i] < G.alpha * 0.5) continue;
+      const line = LINE[i];
+      if (flashes.some((f) => f.line === line)) continue;
+      flashes.push({ line, start: clock, hue: Math.random() < F.teal ? 1 : 0 });
+      return;
+    }
+  }
+
   function draw() {
     locate();
     if (!atlas) return;
@@ -653,17 +696,35 @@ export function runField(canvas: HTMLCanvasElement): () => void {
     const waving = wv.depth > 0;
     const base = G.alpha;
     const wakeAlpha = FIELD.wake.alpha;
+
+    // Each flash rises and falls smoothly over its duration.
+    const F = FIELD.flash;
+    for (const f of flashes) lineFlash[f.line] = 0;
+    flashes = flashes.filter((f) => clock - f.start < F.duration);
+    for (const f of flashes) {
+      const s = Math.sin((Math.PI * (clock - f.start)) / F.duration);
+      lineFlash[f.line] = s * s;
+      lineHue[f.line] = f.hue;
+    }
+    const tinting = !!layer && (flashes.length > 0 || tinted);
+    tinted = flashes.length > 0;
+
     for (let i = 0; i < count; i++) {
       const x = X[i];
       const y = Y[i];
+      const l = LINE[i];
+      const f = lineFlash[l];
+      if (tinting) {
+        TINT[i * 2] = f;
+        TINT[i * 2 + 1] = lineHue[l];
+      }
       const m = clearance(x, y, ROUGH[i]);
       if (m < 0.02) {
         ALPHA[i] = 0;
         continue;
       }
-      let a = base;
+      let a = f > 0 ? base + (F.alpha - base) * f : base;
       if (waving) {
-        const l = LINE[i];
         let v = 0.5 + 0.5 * Math.sin(lineK[l] * ALONG[i] - drift * lineRate[l] + linePhase[l]);
         if (wv.shape !== 1) v **= wv.shape;
         a *= 1 - wv.depth + wv.depth * v;
@@ -672,7 +733,7 @@ export function runField(canvas: HTMLCanvasElement): () => void {
     }
 
     if (layer) {
-      layer.draw(ALPHA);
+      layer.draw(ALPHA, tinting ? TINT : undefined, flashes.length ? F.glow : 0);
       return;
     }
     for (const b of buckets) if (b) b.length = 0;
@@ -705,6 +766,8 @@ export function runField(canvas: HTMLCanvasElement): () => void {
     last = t;
     const still = reduceMotion.matches;
     stir(still ? 0 : dt);
+    clock = t;
+    if (!still && layer) spark(dt);
     if (!still) drift = (drift + (TAU * dt) / FIELD.wave.period) % (TAU * 1e4);
     // The waves and wakes change slowly, so they're redrawn at FIELD.fps; a scroll redraws
     // at once, keeping the clear space around the text in step with it. Held still (reduced

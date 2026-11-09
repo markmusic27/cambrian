@@ -191,12 +191,12 @@ export function runMobile(
       return scene.project(x + lightX * t, y + lightY * t, wallZ);
     },
     palette: {
-      ink: [35, 54, 80],
-      teal: [8, 127, 140],
-      coral: [212, 76, 104],
+      ink: [74, 67, 60],
+      teal: [8, 127, 131],
+      coral: [238, 84, 47],
       wire: [43, 42, 39],
       string: [168, 163, 154],
-      paper: [255, 255, 255],
+      paper: [250, 250, 248],
     },
     quiet: 0,
     layout: "side",
@@ -536,7 +536,7 @@ export function runMobile(
       s.sy = scene.PY;
     }
     renderer.render();
-    if (!options.thumbnail) shareLive();
+    shareLive(); // (the share image too, so its background clears around it)
   }
 
   /** Publishes where the sheets and wires are on screen (live.ts). */

@@ -1,8 +1,8 @@
 <p align="center">
-  <img src=".github/thumbnail.png" width="800" alt="An ASCII-art mobile after Alexander Calder, its sheets printed with reinforcement-learning notation.">
+  <img src=".github/thumbnail.png" width="800" alt="An ASCII-art mobile after Alexander Calder, its sheets printed with reinforcement-learning notation, over faint contour lines.">
 </p>
 
-# Atelier
+# Cambrian
 
 A research workshop for people taking asymmetric bets in robot learning.
 
@@ -24,10 +24,12 @@ will to pursue it.
 
 ## The name
 
-In nineteenth-century Paris, [ateliers](https://en.wikipedia.org/wiki/Atelier) were small workshops
-where artists and architects learned and created with one another outside of the academy. We think
-robotics needs the same thing now. The point is not to commercialize our work, but to provide a space with
-resources and other people working seriously on hard problems.
+The name comes from the [Cambrian explosion](https://en.wikipedia.org/wiki/Cambrian_explosion), when, over
+a short stretch of geological time, life went from simple, soft-bodied organisms to most of the animal body
+plans alive today. We think robots are nearing a similar moment. As one model learns to control whatever
+body it is given, and building that body gets cheap, the shape of a robot stops being a fixed bet. We want
+to help that happen. The point is not to commercialize our work, but to provide the space, resources, and
+people to explore it seriously.
 
 ## Early directions
 
@@ -44,17 +46,19 @@ resources and other people working seriously on hard problems.
 
 ## Get in touch
 
-If you have a bet you want to test and Atelier sounds appealing, we'd like to hear from you. You don't
+If you have a bet you want to test and Cambrian sounds appealing, we'd like to hear from you. You don't
 need to be at Stanford or in a lab. Labs and companies interested in sponsoring research or learning more
 are welcome too. Email us at [mmusic@stanford.edu](mailto:mmusic@stanford.edu).
 
 ## This repository
 
-Atelier's work will live here. For now, it holds the landing page at [atelierlab.io](https://atelierlab.io),
+Cambrian's work will live here. For now, it holds the landing page at [atelierlab.io](https://atelierlab.io),
 a Next.js site: one column of text beside an ASCII-art sculpture after Alexander Calder's
 [*Model for East Building Mobile*](https://www.nga.gov/artworks/55697-model-east-building-mobile) (1972).
 The sculpture is a small physics simulation of a balanced mobile, printed in reinforcement-learning
-notation, that drifts in a slow air current and stirs when the cursor moves across it.
+notation, that drifts in a slow air current and stirs when the cursor moves across it. Behind both, a
+contour map of a rolling terrain is printed in typewriter dashes and periods, clearing softly around the text
+and the sculpture. Gentle waves run along its lines, and now and then one flashes orange or teal.
 
 ```bash
 npm install
@@ -62,6 +66,7 @@ npm run dev     # http://localhost:3000
 ```
 
 The text is in `components/Copy.tsx`, the title and share image in `app/layout.tsx`, the colors in
-`app/globals.css`, and the sculpture in `components/mobile/` (every tuning knob is in `config.ts`). The
-page is set in FK Roman Standard where it's installed locally (its trial license doesn't cover serving it)
-and in Times New Roman otherwise. The sculpture is printed in CMU Typewriter.
+`app/globals.css`, the sculpture in `components/mobile/`, and the background in `components/field/` (each
+keeps its tuning knobs in `config.ts`). The page is set in Legitima where a local copy is available (in the
+gitignored `public/fonts-local/`, since the font isn't ours to serve) and in Times New Roman otherwise. The
+sculpture and the background are printed in CMU Typewriter.

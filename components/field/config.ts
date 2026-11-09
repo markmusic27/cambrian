@@ -1,7 +1,7 @@
 /*
  * The page's background: a contour plot of a gently rolling terrain (terrain.ts), its lines
  * printed in typewriter characters (dashes turned to follow the line, and periods), kept
- * clear of the text and the sculpture. Soft waves run along each line, fading it to white
+ * clear of the text and the sculpture. Soft waves run along each line, fading it to the page color
  * and back, and the sheets of the sculpture stir the lines they move toward.
  * Lengths are CSS px, times seconds.
  */
@@ -36,12 +36,12 @@ export const FIELD = {
   fps: 30,
 
   /**
-   * The waves: along each line a soft gradient runs from white up to the lines' full gray
+   * The waves: along each line a soft gradient runs from the page color up to the lines' full gray
    * and back, about `length` px from one gray stretch to the next (each line a little
    * different, some running one way and some the other), passing every `period` seconds.
    * Each line starts at its own point in the cycle and keeps its own tempo, up to `vary`
    * faster or slower, so neighbors drift in and out of step rather than pulsing together.
-   * `depth` is how far the lines fade (1 all the way to white, 0 holds them at full gray);
+   * `depth` is how far the lines fade (1 all the way out, 0 holds them at full gray);
    * `shape` above 1 shortens the gray stretches, below 1 lengthens them.
    */
   wave: { depth: 1, length: 700, period: 3, vary: 0.35, shape: 1 },
@@ -72,4 +72,14 @@ export const FIELD = {
    * and swing at 10–30 when stirred); `alpha` is the most a wake adds.
    */
   wake: { gain: 0.06, decay: 1.2, ahead: 10, spread: 0.9, alpha: 0.11, cell: 14 },
+
+  /**
+   * Flashes: now and then a whole line takes on one of the accent colors (--orange, or --teal
+   * for `teal` of them) and lets it go again, rising and falling over `duration` s, its
+   * opacity reaching `alpha` at the peak, with a faint halo of the color around it (`glow`,
+   * as a share of the line's own opacity). On average one starts every `every` s somewhere on
+   * screen, so any one line flashes only every few minutes. Drawn on the GPU only; held still
+   * with reduced motion.
+   */
+  flash: { every: 4, duration: 1.9, alpha: 0.3, teal: 0.5, glow: 0.2 },
 };

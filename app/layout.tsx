@@ -3,10 +3,10 @@ import Script from "next/script";
 import "./globals.css";
 
 const description = "A research workshop for people taking asymmetric bets in robot learning.";
-// The page calls itself Atelier; the tab and link previews use the fuller "Atelier Robotics". (No
-// separator in it: iMessage cuts "Atelier | " or "Atelier: " off a title, taking it for the site
-// name since it matches the domain.)
-const title = "Atelier Robotics";
+// The page calls itself Cambrian; the tab and link previews use the fuller "Cambrian Robotics". (No
+// separator in it: iMessage cuts "Cambrian | " or "Cambrian: " off a title, taking it for the site
+// name when it matches the domain.)
+const title = "Cambrian Robotics";
 
 // The share image is app/opengraph-image.png (and twitter-image.png), a capture of app/thumbnail.
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#fafaf8",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

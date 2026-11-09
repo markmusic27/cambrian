@@ -54,7 +54,7 @@ const sheet = (shape: ShapeKind, size: number, color: ColorKey, extra: Partial<S
 });
 
 /*
- * The arrangement. Mostly blue-black and teal, with one coral.
+ * The arrangement. Mostly brown-gray ("ink") and teal, with one orange ("coral").
  * Add or remove arms freely: balance points, inertia and springs are all derived.
  */
 export const DESIGN: RodSpec = rod({
@@ -227,7 +227,7 @@ export const VIEW = {
    * the text column, the right edge, above the top pivot (the thread runs through it) and
    * the bottom. Within that space the mobile grows as large as it fits.
    */
-  sidePadding: { gap: 0.004, gapMin: 6, right: 8, top: 0.11, topMin: 48, topMax: 150, bottom: 16 },
+  sidePadding: { gap: 0.014, gapMin: 20, right: 8, top: 0.11, topMin: 48, topMax: 150, bottom: 16 },
   /**
    * Still while reading: scrolled down by `over` window heights or more, the mobile settles
    * (at `settle` per second) into its display pose, every arm turned nearly flat to the

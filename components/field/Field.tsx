@@ -9,13 +9,14 @@ import { useEffect, useRef } from "react";
 import { FIELD } from "./config";
 import { runField } from "./draw-field";
 
-export default function Field() {
+/** `still`: drawn once and held (the share image, app/thumbnail). */
+export default function Field({ still = false }: { still?: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     if (!ref.current || !FIELD.enabled) return;
-    return runField(ref.current);
-  }, []);
+    return runField(ref.current, { still });
+  }, [still]);
 
   if (!FIELD.enabled) return null;
   return <canvas ref={ref} aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 h-full w-full" />;
