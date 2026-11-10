@@ -7,10 +7,10 @@ import type { ReactNode } from "react";
 const NOTES: ReactNode[] = [
   <>
     The sculpture on this page is after Alexander Calder, inspired by his{" "}
-    <Link href="https://www.nga.gov/artworks/55697-model-east-building-mobile">
-      <i>Model for East Building Mobile</i>
+    <Link href="https://www.centrepompidou.fr/en/ressources/oeuvre/cynjBoX">
+      <i>Mobile sur deux plans</i>
     </Link>{" "}
-    (1972) at the National Gallery of Art.
+    (1962) at the Centre Pompidou.
   </>,
   <>
     Two OpenAI team members worked with GPT-6 Astra to design a prototype device for talking to Codex in under a

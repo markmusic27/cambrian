@@ -53,11 +53,12 @@
   --font-serif: "Legitima", serif;
   --color-paper: var(--paper);
   --color-ink: var(--ink);
+  --color-label: var(--label);
 }
 
 /*
  * Palette, light and dark (following the system setting). The --mobile-* tokens are read by
- * the canvas (components/mobile/), and --ink, --jade, --teal and --mobile-ink by the
+ * the canvas (components/mobile/), and --ink, --rose, --teal and --mobile-ink by the
  * background (components/field/), so both follow the color scheme along with the text.
  */
 :root {
@@ -67,17 +68,20 @@
      share its hue. */
   --paper: #fafaf8;
   --ink: #26251e;
+  /* The hover label under the sculpture (components/mobile/ArtCredit.tsx): a step lighter than
+     the page. */
+  --label: #ffffff;
   /* The two accent colors, on the sculpture's sheets. Both, with the brown --mobile-ink below,
      also flash now and then along a contour line. */
-  --jade: #ce3f52;
+  --rose: #ce3f52;
   --teal: #087f83;
 
-  /* The arms, and the sheets' three text colors: teal, jade (one sheet, under the key
+  /* The arms, and the sheets' three text colors: teal, rose (one sheet, under the key
      "coral"), and a warm brown-gray (under the key "ink"). */
   --mobile-wire: #2b2a27;
   --mobile-ink: #4a433c;
   --mobile-teal: var(--teal);
-  --mobile-coral: var(--jade);
+  --mobile-coral: var(--rose);
   /* The strings (the thread and the hooks), set apart from the arms by color. */
   --mobile-string: #a8a39a;
   /* The page background, for the canvas. */
@@ -105,7 +109,8 @@
   :root {
     --paper: #0f0e0b;
     --ink: #f2f0eb;
-    --jade: #d86471;
+    --label: #1b1b1b;
+    --rose: #d86471;
     --teal: #5ab1b5;
 
     --mobile-wire: #b9b3a8;

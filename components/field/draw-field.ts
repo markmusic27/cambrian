@@ -424,9 +424,9 @@ export function runField(
     lineAlpha = num("--field-alpha", G.alpha);
     glow = num("--field-glow", FIELD.flash.glow);
     spread = num("--field-spread", 1);
-    layer?.setHues(hue("--jade"), hue("--mobile-ink"), hue("--teal"));
+    layer?.setHues(hue("--rose"), hue("--mobile-ink"), hue("--teal"));
     const lit = FIELD.flash.glows;
-    layer?.setHueGlows(lit.jade, lit.brown, lit.teal);
+    layer?.setHueGlows(lit.rose, lit.brown, lit.teal);
 
     trace();
     drawAtlas();
@@ -705,11 +705,11 @@ export function runField(
   // How far the waves have run (radians), advanced each frame.
   let drift = 0;
 
-  /** A flash's color, in proportion to FIELD.flash.colors: 0 jade, 1 brown, 2 teal. */
+  /** A flash's color, in proportion to FIELD.flash.colors: 0 rose, 1 brown, 2 teal. */
   function pickHue() {
-    const { jade, brown, teal } = FIELD.flash.colors;
-    const r = Math.random() * (jade + brown + teal);
-    return r < jade ? 0 : r < jade + brown ? 1 : 2;
+    const { rose, brown, teal } = FIELD.flash.colors;
+    const r = Math.random() * (rose + brown + teal);
+    return r < rose ? 0 : r < rose + brown ? 1 : 2;
   }
 
   /** Now and then starts a flash on a line that's showing (one not cleared away). */

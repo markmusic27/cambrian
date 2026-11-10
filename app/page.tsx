@@ -1,6 +1,7 @@
 import Copy from "@/components/Copy";
 import { FIELD } from "@/components/field/config";
 import Field from "@/components/field/Field";
+import ArtCredit from "@/components/mobile/ArtCredit";
 import Mobile from "@/components/mobile/Mobile";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
       <Field />
       <Mobile />
       <Copy />
+      <ArtCredit />
     </>
   );
 }

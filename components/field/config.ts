@@ -74,7 +74,7 @@ export const FIELD = {
   wake: { gain: 0.06, decay: 1.2, ahead: 10, spread: 0.9, alpha: 0.11, cell: 14 },
 
   /**
-   * Flashes: now and then a whole line takes on one of the sculpture's sheet colors (--jade,
+   * Flashes: now and then a whole line takes on one of the sculpture's sheet colors (--rose,
    * the brown --mobile-ink or --teal, picked in proportion to `colors`) and lets it go again,
    * rising and falling over `duration` s, its opacity reaching `alpha` at the peak, with a
    * faint halo of the color around it (`glow`, as a share of the line's own opacity, times
@@ -86,9 +86,9 @@ export const FIELD = {
     every: 4,
     duration: 1.9,
     alpha: 0.25,
-    colors: { jade: 1, brown: 2, teal: 1 },
+    colors: { rose: 1, brown: 2, teal: 1 },
     glow: 0.12,
-    glows: { jade: 1, brown: 0, teal: 1 },
+    glows: { rose: 1, brown: 0, teal: 1 },
   },
 
   /**

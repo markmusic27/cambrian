@@ -56,12 +56,11 @@ Email us at [mmusic@stanford.edu](mailto:mmusic@stanford.edu).
 
 Cambrian's work will live here. For now, it holds the landing page at
 [cambrianresearch.org](https://cambrianresearch.org), a Next.js site: one column of text beside an ASCII-art
-sculpture after Alexander Calder's
-[*Model for East Building Mobile*](https://www.nga.gov/artworks/55697-model-east-building-mobile) (1972).
+sculpture after Alexander Calder's [*Mobile sur deux plans*](https://www.centrepompidou.fr/en/ressources/oeuvre/cynjBoX) (1962), at the Centre Pompidou.
 The sculpture is a small physics simulation of a balanced mobile, printed in reinforcement-learning
 notation, that drifts in a slow air current and stirs when the cursor moves across it. Behind both, a
 contour map of a rolling terrain is printed in typewriter dashes and periods, clearing softly around the text
-and the sculpture. Gentle waves run along its lines, and now and then one flashes jade, brown, or teal.
+and the sculpture. Gentle waves run along its lines, and now and then one flashes brown, teal, or rose.
 
 ```bash
 npm install
