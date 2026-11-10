@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { SITE_URL } from "./site";
 
 const description = "A research workshop for people taking asymmetric bets in robot learning.";
 // The page calls itself Cambrian; the tab and link previews use the fuller "Cambrian Robotics". (No
@@ -8,11 +9,13 @@ const description = "A research workshop for people taking asymmetric bets in ro
 const title = "Cambrian Robotics";
 
 // The share image is app/opengraph-image.png (and twitter-image.png), a capture of app/thumbnail.
+// Relative URLs here (and the share images') resolve against SITE_URL.
 export const metadata: Metadata = {
-  metadataBase: new URL("https://cambrianresearch.org"),
+  metadataBase: new URL(SITE_URL),
   title,
   description,
-  openGraph: { title, description, url: "/", type: "website" },
+  alternates: { canonical: "/" },
+  openGraph: { title, description, url: "/", siteName: "Cambrian", locale: "en_US", type: "website" },
   twitter: { card: "summary_large_image", title, description },
 };
 
