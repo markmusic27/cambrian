@@ -53,7 +53,6 @@
   --font-serif: "Legitima", serif;
   --color-paper: var(--paper);
   --color-ink: var(--ink);
-  --color-label: var(--label);
 }
 
 /*
@@ -68,9 +67,6 @@
      share its hue. */
   --paper: #fafaf8;
   --ink: #26251e;
-  /* The hover label under the sculpture (components/mobile/ArtCredit.tsx): a step lighter than
-     the page. */
-  --label: #ffffff;
   /* The two accent colors, on the sculpture's sheets. Both, with the brown --mobile-ink below,
      also flash now and then along a contour line. */
   --rose: #ce3f52;
@@ -109,7 +105,6 @@
   :root {
     --paper: #0f0e0b;
     --ink: #f2f0eb;
-    --label: #1b1b1b;
     --rose: #d86471;
     --teal: #5ab1b5;
 
