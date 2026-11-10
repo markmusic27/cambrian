@@ -75,7 +75,10 @@ export default function Copy() {
     <main className="page relative z-10 px-4 pt-14 pb-24 md:pt-[clamp(56px,12vh,128px)] md:pr-8 md:pl-[clamp(24px,6vw,96px)]">
       <article id="column" className="max-w-[620px] text-pretty [&_p]:mb-[1.05em]">
         <h1 className="mb-3 text-[2.15rem] leading-tight font-normal tracking-[-0.02em]">Cambrian</h1>
-        <div className="mb-7">A research workshop for people taking asymmetric bets in robot learning.</div>
+        <div className="mb-2">A research workshop for people taking asymmetric bets in robot learning.</div>
+        <time dateTime="2026-11-06" className="mb-7 block text-[0.88em] text-ink/60">
+          November 6, 2026
+        </time>
         <hr className="mb-7 w-14 border-0 border-t border-current opacity-30" />
 
         {/* The body copy. */}
