@@ -89,9 +89,8 @@ html.fk body {
 }
 
 /*
- * Trying Legitima (César Puertas) for the page's text, from a copy kept on this machine only:
- * public/fonts-local/ is gitignored, since the font isn't ours to serve. Only its Regular is
- * here, so bold and italic are the browser's own slanting and thickening. Delete this block to
+ * Legitima (César Puertas) for the page's text, served from public/fonts-local/. Only its
+ * Regular is here, so bold and italic are the browser's own slanting and thickening. Delete this block to
  * go back to FK Roman.
  */
 @font-face {
