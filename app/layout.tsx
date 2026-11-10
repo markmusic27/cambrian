@@ -9,7 +9,7 @@ const title = "Cambrian Robotics";
 
 // The share image is app/opengraph-image.png (and twitter-image.png), a capture of app/thumbnail.
 export const metadata: Metadata = {
-  metadataBase: new URL("https://atelierlab.io"),
+  metadataBase: new URL("https://cambrianresearch.org"),
   title,
   description,
   openGraph: { title, description, url: "/", type: "website" },

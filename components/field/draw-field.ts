@@ -58,9 +58,13 @@ function segmentDistance(x: number, y: number, ax: number, ay: number, bx: numbe
 
 /**
  * `still`: drawn once, held still, on the 2D canvas (the share image, app/thumbnail, so it can
- * be captured).
+ * be captured). `zoom`: the whole background drawn this many times larger (the terrain, the
+ * lines, their characters and the clear space), for the share image's closer view.
  */
-export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}): () => void {
+export function runField(
+  canvas: HTMLCanvasElement,
+  { still: held = false, zoom = 1 } = {},
+): () => void {
   // The GPU draws the characters where it can (gl-glyphs.ts); otherwise, while the clear
   // space is shown in red, and when held still, the 2D canvas does.
   const layer = FIELD.showClearing || held ? null : glyphLayer(canvas);
@@ -403,10 +407,11 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
   }
 
   function build() {
+    // Everything is laid out in CSS px divided by the zoom, and drawn that much larger.
     const rect = canvas.getBoundingClientRect();
-    W = rect.width;
-    H = rect.height;
-    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = rect.width / zoom;
+    H = rect.height / zoom;
+    dpr = Math.min(2, window.devicePixelRatio || 1) * zoom;
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
     const css = getComputedStyle(document.documentElement);
@@ -575,10 +580,10 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     const r = live.canvas.getBoundingClientRect();
     const ox = r.left;
     const oy = r.top;
-    sheetX = live.sheets.map((s) => s.x + ox);
-    sheetY = live.sheets.map((s) => s.y + oy);
-    sheetR = live.sheets.map((s) => s.r * A.sheet);
-    wires = live.wires.map((v, i) => v + (i % 2 ? oy : ox));
+    sheetX = live.sheets.map((s) => (s.x + ox) / zoom);
+    sheetY = live.sheets.map((s) => (s.y + oy) / zoom);
+    sheetR = live.sheets.map((s) => (s.r / zoom) * A.sheet);
+    wires = live.wires.map((v, i) => (v + (i % 2 ? oy : ox)) / zoom);
     artL = Infinity;
     artR = -Infinity;
     artT = Infinity;
@@ -859,8 +864,21 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
   // Draw the characters again once the typewriter face has loaded, and measure the text
   // again once its own fonts have.
   let disposed = false;
-  document.fonts.load(font(G.size)).then(() => !disposed && drawAtlas());
-  document.fonts.ready.then(() => !disposed && measureText());
+  // Held still, it also draws straight away once everything has loaded, without waiting on
+  // animation frames (which a hidden or background tab doesn't get), so it can be captured.
+  const drawHeld = () => {
+    if (held && !disposed) draw();
+  };
+  document.fonts.load(font(G.size)).then(() => {
+    if (disposed) return;
+    drawAtlas();
+    drawHeld();
+  });
+  document.fonts.ready.then(() => {
+    if (disposed) return;
+    measureText();
+    setTimeout(drawHeld, 100); // after the sculpture has drawn and said where it is
+  });
 
   return () => {
     disposed = true;

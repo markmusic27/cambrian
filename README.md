@@ -54,8 +54,9 @@ Email us at [mmusic@stanford.edu](mailto:mmusic@stanford.edu).
 
 ## This repository
 
-Cambrian's work will live here. For now, it holds the landing page at [atelierlab.io](https://atelierlab.io),
-a Next.js site: one column of text beside an ASCII-art sculpture after Alexander Calder's
+Cambrian's work will live here. For now, it holds the landing page at
+[cambrianresearch.org](https://cambrianresearch.org), a Next.js site: one column of text beside an ASCII-art
+sculpture after Alexander Calder's
 [*Model for East Building Mobile*](https://www.nga.gov/artworks/55697-model-east-building-mobile) (1972).
 The sculpture is a small physics simulation of a balanced mobile, printed in reinforcement-learning
 notation, that drifts in a slow air current and stirs when the cursor moves across it. Behind both, a

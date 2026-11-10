@@ -31,7 +31,7 @@ export const FIELD = {
    * at opacity `alpha` (in --ink). About `dash` of them are dashes (each line has its own
    * mix), the rest periods, with the odd single gap (`gap`).
    */
-  glyph: { size: 12, step: 6.5, alpha: 0.11, dash: 0.6, gap: 0.05 },
+  glyph: { size: 12, step: 6.5, alpha: 0.12, dash: 0.6, gap: 0.05 },
   /** Redraws per second while something moves (the waves, the sculpture). */
   fps: 30,
 
@@ -90,4 +90,10 @@ export const FIELD = {
    * can't start until `cooldown` s after the last.
    */
   burst: { count: 24, alpha: 0.5, duration: 2.9, spread: 0.6, cooldown: 1.5 },
+
+  /**
+   * The share image (app/thumbnail) shows the sculpture about twice as large as the page does,
+   * so its background is drawn `thumbnailZoom` times larger to match.
+   */
+  thumbnailZoom: 2,
 };
