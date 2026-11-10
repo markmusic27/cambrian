@@ -18,7 +18,7 @@ Frontier AI has collapsed the cost of software and is beginning to do the same f
 of the setup is no longer the bottleneck. Frontier models are also showing strong spatial reasoning,
 enough to generate realistic 3D environments and even actuate robots directly, and we think much of the
 field still underestimates what they can unlock when used creatively. Together, these mean that testing a
-strange idea now costs a fraction of what it did even a few months ago. Directions that once needed a
+new idea now costs a fraction of what it did even a few months ago. Directions that once needed a
 well-funded lab and years of infrastructure are now within reach of a small group with a good idea and the
 will to pursue it.
 
