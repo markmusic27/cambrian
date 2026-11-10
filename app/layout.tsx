@@ -16,8 +16,12 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
 };
 
+// The page colors (--paper in app/globals.css), for the browser's own chrome.
 export const viewport: Viewport = {
-  themeColor: "#fafaf8",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafaf8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f0e0b" },
+  ],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

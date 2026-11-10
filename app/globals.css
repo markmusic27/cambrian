@@ -56,13 +56,15 @@
 }
 
 /*
- * Palette, light only (the page ignores the system's dark mode). The --mobile-* tokens are
- * read by the canvas (components/mobile/).
+ * Palette, light and dark (following the system setting). The --mobile-* tokens are read by
+ * the canvas (components/mobile/), and --ink, --jade, --teal and --mobile-ink by the
+ * background (components/field/), so both follow the color scheme along with the text.
  */
 :root {
-  color-scheme: light;
-  /* A warm off-white and a warm near-black, after cursor.com's light theme (its #f7f7f4, a touch lighter). The contour lines are
-     this ink at low opacity (components/field/), so they share its hue. */
+  color-scheme: light dark;
+  /* A warm off-white and a warm near-black, after cursor.com's light theme (its #f7f7f4, a
+     touch lighter). The contour lines are this ink at low opacity (components/field/), so they
+     share its hue. */
   --paper: #fafaf8;
   --ink: #26251e;
   /* The two accent colors, on the sculpture's sheets. Both, with the brown --mobile-ink below,
@@ -87,6 +89,34 @@
 
   /* Height of the mobile when it sits above the text on narrow screens. */
   --mobile-h: clamp(260px, 82vw, 440px);
+}
+
+/*
+ * Dark mode. The page is a near-black a touch warmer than generalistai.com's (#0a0a0a) and
+ * not as brown as cursor.com's dark theme (#14120b): halfway between them. The text is a warm
+ * off-white between theirs (#ffffff and #edecec). The accents and the sculpture's colors are
+ * lifted so they read on the dark page.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0f0e0b;
+    --ink: #f2f0eb;
+    --jade: #2cc9a0;
+    --teal: #4cbfc2;
+
+    --mobile-wire: #b9b3a8;
+    --mobile-ink: #b3a898;
+    --mobile-string: #4a463f;
+    --mobile-tint: 0.15;
+    --mobile-depth-fade: 0.4;
+
+    /* The background lines a little fainter than in light mode (FIELD.glyph.alpha, 0.11), and
+       the flashes' glow a little softer (FIELD.flash.glow, 0.12): light on dark reads stronger. */
+    --field-alpha: 0.065;
+    --field-glow: 0.09;
+    /* The clear space around the text and the sculpture reaching a little further. */
+    --field-spread: 1.15;
+  }
 }
 
 html {

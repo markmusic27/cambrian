@@ -90,6 +90,13 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
   let H = 0;
   let dpr = 1;
   let ink = "#26251e";
+  // The lines' opacity and the flashes' glow: FIELD.glyph.alpha and FIELD.flash.glow, unless
+  // the color scheme sets its own (--field-alpha, --field-glow in globals.css).
+  let lineAlpha = G.alpha;
+  let glow = FIELD.flash.glow;
+  // How far the clear space around the text and the sculpture reaches, as a multiple of
+  // FIELD.text and FIELD.art (--field-spread in globals.css; 1 when unset).
+  let spread = 1;
 
   // The characters: where each sits (CSS px, and its corner in device px), which sprite it
   // is, the line it's on and how far along it, and a fixed wobble for the edge of the
@@ -405,6 +412,13 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     const css = getComputedStyle(document.documentElement);
     ink = css.getPropertyValue("--ink").trim() || ink;
     const hue = (name: string) => css.getPropertyValue(name).trim();
+    const num = (name: string, fallback: number) => {
+      const v = parseFloat(css.getPropertyValue(name));
+      return Number.isFinite(v) ? v : fallback;
+    };
+    lineAlpha = num("--field-alpha", G.alpha);
+    glow = num("--field-glow", FIELD.flash.glow);
+    spread = num("--field-spread", 1);
     layer?.setHues(hue("--jade"), hue("--mobile-ink"), hue("--teal"));
 
     trace();
@@ -515,8 +529,9 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
   function clearance(x: number, y: number, rough: number) {
     let m = 1;
     const py = y + scroll; // down the page
-    if (textBoxes.length && x > textL - textReach && x < textR + textReach && py > textT - textReach && py < textB + textReach) {
-      let d = textReach;
+    const tr = textReach * spread;
+    if (textBoxes.length && x > textL - tr && x < textR + tr && py > textT - tr && py < textB + tr) {
+      let d = tr;
       for (let j = 0; j < textBoxes.length; j += 4) {
         const dy = Math.max(textBoxes[j + 1] - py, py - textBoxes[j + 3], 0);
         if (dy >= d) continue;
@@ -525,6 +540,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
         if (dd < d) d = dd;
       }
       if (d === 0) return 0; // over the text itself
+      d /= spread;
       if (d < textReach) {
         // Clear by each line; lighter around the text as a whole, its edge wandering more
         // the further it is from the text.
@@ -544,6 +560,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
         const dd = segmentDistance(x, y, wires[j], wires[j + 1], wires[j + 2], wires[j + 3]) - A.wire;
         if (dd < d) d = dd;
       }
+      d /= spread;
       if (d < artReach) m *= smoothstep(A.inner, A.inner + A.fade, d + A.rough * rough);
     }
     return m;
@@ -578,10 +595,11 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
       artT = Math.min(artT, wires[j + 1]);
       artB = Math.max(artB, wires[j + 1]);
     }
-    artL -= artReach + A.wire;
-    artR += artReach + A.wire;
-    artT -= artReach + A.wire;
-    artB += artReach + A.wire;
+    const margin = (artReach + A.wire) * spread;
+    artL -= margin;
+    artR += margin;
+    artT -= margin;
+    artB += margin;
   }
 
   /** Fades the wakes, and lays down new ones ahead of each moving sheet. */
@@ -693,7 +711,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     if (!count || Math.random() >= dt / F.every) return;
     for (let tries = 0; tries < 12; tries++) {
       const i = (Math.random() * count) | 0;
-      if (ALPHA[i] < G.alpha * 0.5) continue;
+      if (ALPHA[i] < lineAlpha * 0.5) continue;
       const line = LINE[i];
       if (flashes.some((f) => f.line === line)) continue;
       flashes.push({ line, start: clock, hue: pickHue(), peak: F.alpha, length: F.duration });
@@ -713,7 +731,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     const taken = new Set(flashes.map((f) => f.line));
     for (let tries = 0, made = 0; made < B.count && tries < B.count * 40; tries++) {
       const i = (Math.random() * count) | 0;
-      if (ALPHA[i] < G.alpha * 0.5 || taken.has(LINE[i])) continue;
+      if (ALPHA[i] < lineAlpha * 0.5 || taken.has(LINE[i])) continue;
       taken.add(LINE[i]);
       made++;
       const start = clock + Math.random() * B.spread;
@@ -726,7 +744,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     if (!atlas) return;
     const wv = FIELD.wave;
     const waving = wv.depth > 0;
-    const base = G.alpha;
+    const base = lineAlpha;
     const wakeAlpha = FIELD.wake.alpha;
 
     // Each flash rises and falls smoothly over its duration.
@@ -767,7 +785,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     }
 
     if (layer) {
-      layer.draw(ALPHA, tinting ? TINT : undefined, flashes.length ? F.glow : 0);
+      layer.draw(ALPHA, tinting ? TINT : undefined, flashes.length ? glow : 0);
       return;
     }
     for (const b of buckets) if (b) b.length = 0;
@@ -820,6 +838,8 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     dirty = true;
   };
   const onResize = () => build();
+  // Light and dark mode have their own ink and accents (globals.css); build() reads them.
+  const colorScheme = matchMedia("(prefers-color-scheme: dark)");
   // The pointer coming onto anything marked data-flash-burst (the "Cambrian explosion" link in
   // the copy) sets off a burst; moving within it doesn't.
   const onPointerOver = (e: PointerEvent) => {
@@ -830,6 +850,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
   measureText();
   window.addEventListener("resize", onResize);
   window.addEventListener("scroll", onScroll, { passive: true });
+  colorScheme.addEventListener("change", onResize);
   document.addEventListener("pointerover", onPointerOver);
   // The text's lines move whenever its layout does (a new width, the fonts arriving).
   const textResize = new ResizeObserver(() => measureText());
@@ -848,6 +869,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     textResize.disconnect();
     window.removeEventListener("resize", onResize);
     window.removeEventListener("scroll", onScroll);
+    colorScheme.removeEventListener("change", onResize);
     document.removeEventListener("pointerover", onPointerOver);
   };
 }

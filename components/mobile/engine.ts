@@ -339,7 +339,7 @@ export function runMobile(
   }
 
   // -----------------------------------------------------------------------------------
-  // Colors, read from CSS so they stay in one place (globals.css).
+  // Colors, read from CSS so light and dark mode stay in one place (globals.css).
   // -----------------------------------------------------------------------------------
   function readColors() {
     const cs = getComputedStyle(html);
@@ -656,6 +656,13 @@ export function runMobile(
     start();
   };
 
+  const colorScheme = matchMedia("(prefers-color-scheme: dark)");
+  const onScheme = () => {
+    readColors();
+    renderer.resize();
+    if (still) render();
+  };
+
   // Skip work while the canvas is scrolled out of view (stacked layout).
   const io = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
@@ -694,6 +701,7 @@ export function runMobile(
   narrow.addEventListener("change", layout);
   phoneWidth.addEventListener("change", layout);
   reduceMotion.addEventListener("change", onMotionPref);
+  colorScheme.addEventListener("change", onScheme);
 
   return () => {
     alive = false;
@@ -709,6 +717,7 @@ export function runMobile(
     narrow.removeEventListener("change", layout);
     phoneWidth.removeEventListener("change", layout);
     reduceMotion.removeEventListener("change", onMotionPref);
+    colorScheme.removeEventListener("change", onScheme);
     html.removeAttribute("data-stacked");
     html.style.removeProperty("--mobile-h");
   };
