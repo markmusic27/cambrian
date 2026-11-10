@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/thumbnail.png" width="800" alt="An ASCII-art mobile after Alexander Calder, its sheets printed with reinforcement-learning notation, over faint contour lines.">
+  <img src=".github/thumbnail.png" width="800" alt="An ASCII-art mobile after Alexander Calder, its sheets printed with reinforcement-learning notation.">
 </p>
 
 # Cambrian

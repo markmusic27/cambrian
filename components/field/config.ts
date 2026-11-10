@@ -92,8 +92,8 @@ export const FIELD = {
   burst: { count: 24, alpha: 0.5, duration: 2.9, spread: 0.6, cooldown: 1.5 },
 
   /**
-   * The share image (app/thumbnail) shows the sculpture about twice as large as the page does,
-   * so its background is drawn `thumbnailZoom` times larger to match.
+   * The share image (app/thumbnail): whether it has the background at all (`show`), and if so,
+   * drawn `zoom` times larger, since it shows the sculpture about twice as large as the page.
    */
-  thumbnailZoom: 2,
+  thumbnail: { show: false, zoom: 2 },
 };
