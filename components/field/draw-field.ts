@@ -12,7 +12,8 @@
  *   - fading out and back as soft waves run along its line;
  *   - darker in the wake of a sheet moving toward it (the sculpture's positions come from
  *     components/mobile/live.ts);
- *   - and, rarely, a whole line flashing one of the accent colors.
+ *   - and, rarely, a whole line flashing one of the accent colors (or many at once, when the
+ *     pointer comes onto an element marked data-flash-burst).
  *
  * Each character is copied from a sheet of sprites drawn once: on the GPU where it can
  * (gl-glyphs.ts), all in one go, or else on the 2D canvas.
@@ -110,9 +111,11 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
   let lineRate = new Float32Array(0);
   // The flashes under way (FIELD.flash), and per line this frame how far into its color it
   // is and which color; per character, the same two numbers for the GPU.
-  let flashes: { line: number; start: number; hue: number }[] = [];
+  // Each flash also has its own peak opacity and length (a burst's are stronger and longer).
+  let flashes: { line: number; start: number; hue: number; peak: number; length: number }[] = [];
   let lineFlash = new Float32Array(0);
   let lineHue = new Float32Array(0);
+  let linePeak = new Float32Array(0);
   let TINT = new Float32Array(0);
   let tinted = false; // whether TINT holds any color, so it needs clearing when the flashes end
   let clock = 0; // seconds, from the animation frames
@@ -374,6 +377,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     flashes = [];
     lineFlash = new Float32Array(n);
     lineHue = new Float32Array(n);
+    linePeak = new Float32Array(n);
   }
 
   /** Where each character's sprite goes, in device px. */
@@ -400,7 +404,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     canvas.height = Math.round(H * dpr);
     const css = getComputedStyle(document.documentElement);
     ink = css.getPropertyValue("--ink").trim() || ink;
-    layer?.setHues(css.getPropertyValue("--orange").trim(), css.getPropertyValue("--teal").trim());
+    layer?.setHues(css.getPropertyValue("--orange").trim(), css.getPropertyValue("--mobile-ink").trim());
 
     trace();
     drawAtlas();
@@ -684,8 +688,30 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
       if (ALPHA[i] < G.alpha * 0.5) continue;
       const line = LINE[i];
       if (flashes.some((f) => f.line === line)) continue;
-      flashes.push({ line, start: clock, hue: Math.random() < F.teal ? 1 : 0 });
+      const hue = Math.random() < F.brown ? 1 : 0;
+      flashes.push({ line, start: clock, hue, peak: F.alpha, length: F.duration });
       return;
+    }
+  }
+
+  /**
+   * A burst (FIELD.burst): many lines that are showing flash at once, their starts staggered a
+   * little so it reads as a ripple of flashes rather than one blink.
+   */
+  let lastBurst = -Infinity;
+  function burst() {
+    const B = FIELD.burst;
+    if (!layer || reduceMotion.matches || !count || clock - lastBurst < B.cooldown) return;
+    lastBurst = clock;
+    const taken = new Set(flashes.map((f) => f.line));
+    for (let tries = 0, made = 0; made < B.count && tries < B.count * 40; tries++) {
+      const i = (Math.random() * count) | 0;
+      if (ALPHA[i] < G.alpha * 0.5 || taken.has(LINE[i])) continue;
+      taken.add(LINE[i]);
+      made++;
+      const start = clock + Math.random() * B.spread;
+      const hue = Math.random() < FIELD.flash.brown ? 1 : 0;
+      flashes.push({ line: LINE[i], start, hue, peak: B.alpha, length: B.duration });
     }
   }
 
@@ -700,11 +726,13 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     // Each flash rises and falls smoothly over its duration.
     const F = FIELD.flash;
     for (const f of flashes) lineFlash[f.line] = 0;
-    flashes = flashes.filter((f) => clock - f.start < F.duration);
+    flashes = flashes.filter((f) => clock - f.start < f.length);
     for (const f of flashes) {
-      const s = Math.sin((Math.PI * (clock - f.start)) / F.duration);
+      if (clock < f.start) continue; // a burst's later flash, not begun yet
+      const s = Math.sin((Math.PI * (clock - f.start)) / f.length);
       lineFlash[f.line] = s * s;
       lineHue[f.line] = f.hue;
+      linePeak[f.line] = f.peak;
     }
     const tinting = !!layer && (flashes.length > 0 || tinted);
     tinted = flashes.length > 0;
@@ -723,7 +751,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
         ALPHA[i] = 0;
         continue;
       }
-      let a = f > 0 ? base + (F.alpha - base) * f : base;
+      let a = f > 0 ? base + (linePeak[l] - base) * f : base;
       if (waving) {
         let v = 0.5 + 0.5 * Math.sin(lineK[l] * ALONG[i] - drift * lineRate[l] + linePhase[l]);
         if (wv.shape !== 1) v **= wv.shape;
@@ -786,10 +814,17 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     dirty = true;
   };
   const onResize = () => build();
+  // The pointer coming onto anything marked data-flash-burst (the "Cambrian explosion" link in
+  // the copy) sets off a burst; moving within it doesn't.
+  const onPointerOver = (e: PointerEvent) => {
+    const el = e.target instanceof Element ? e.target.closest("[data-flash-burst]") : null;
+    if (el && !(e.relatedTarget instanceof Node && el.contains(e.relatedTarget))) burst();
+  };
   build();
   measureText();
   window.addEventListener("resize", onResize);
   window.addEventListener("scroll", onScroll, { passive: true });
+  document.addEventListener("pointerover", onPointerOver);
   // The text's lines move whenever its layout does (a new width, the fonts arriving).
   const textResize = new ResizeObserver(() => measureText());
   if (column) textResize.observe(column);
@@ -807,5 +842,6 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     textResize.disconnect();
     window.removeEventListener("resize", onResize);
     window.removeEventListener("scroll", onScroll);
+    document.removeEventListener("pointerover", onPointerOver);
   };
 }

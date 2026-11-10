@@ -58,7 +58,7 @@ a Next.js site: one column of text beside an ASCII-art sculpture after Alexander
 The sculpture is a small physics simulation of a balanced mobile, printed in reinforcement-learning
 notation, that drifts in a slow air current and stirs when the cursor moves across it. Behind both, a
 contour map of a rolling terrain is printed in typewriter dashes and periods, clearing softly around the text
-and the sculpture. Gentle waves run along its lines, and now and then one flashes orange or teal.
+and the sculpture. Gentle waves run along its lines, and now and then one flashes orange or brown.
 
 ```bash
 npm install

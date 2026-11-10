@@ -164,7 +164,7 @@ export function glyphLayer(canvas: HTMLCanvasElement): GlyphLayer | null {
     setHues(first, second) {
       use();
       gl.uniform3f(uHue0, ...rgb(first, "#ee542f"));
-      gl.uniform3f(uHue1, ...rgb(second, "#087f83"));
+      gl.uniform3f(uHue1, ...rgb(second, "#4a433c"));
     },
 
     setGlyphs(x, y, kind) {

@@ -65,8 +65,8 @@
      this ink at low opacity (components/field/), so they share its hue. */
   --paper: #fafaf8;
   --ink: #26251e;
-  /* The two accent colors: on the sculpture's sheets, and now and then flashing along a contour
-     line. */
+  /* The two accent colors, on the sculpture's sheets. The orange, with the brown --mobile-ink
+     below, also flashes now and then along a contour line. */
   --orange: #ee542f;
   --teal: #087f83;
 

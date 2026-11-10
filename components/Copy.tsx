@@ -42,9 +42,10 @@ const NOTES: ReactNode[] = [
 const linkClass =
   "underline decoration-current/30 underline-offset-[0.18em] transition-colors duration-120 ease-out hover:decoration-current";
 
-function Link({ href, children }: { href: string; children: ReactNode }) {
+/** `burst`: hovering it flashes many of the background's lines at once (components/field/). */
+function Link({ href, burst, children }: { href: string; burst?: boolean; children: ReactNode }) {
   return (
-    <a href={href} className={linkClass}>
+    <a href={href} className={linkClass} data-flash-burst={burst || undefined}>
       {children}
     </a>
   );
@@ -115,7 +116,9 @@ export default function Copy() {
 
           <p>
             The name comes from the{" "}
-            <Link href="https://en.wikipedia.org/wiki/Cambrian_explosion">Cambrian explosion</Link>, when, over a
+            <Link href="https://en.wikipedia.org/wiki/Cambrian_explosion" burst>
+              Cambrian explosion
+            </Link>, when, over a
             short stretch of geological time, life went from simple, soft-bodied organisms to most of the animal
             body plans alive today. We think robots are nearing a similar moment. As one model learns to control
             whatever body it is given, and building that body gets cheap, the shape of a robot stops being a fixed
