@@ -17,6 +17,7 @@ uniform float u_cell;
 uniform float u_kinds;
 uniform float u_glow; // > 0 for the glow pass: each tinted character's halo, this strong
 uniform float u_glowKind;
+uniform vec3 u_hueGlow; // how much glow each of the three accent colors gets (0 for none)
 out vec2 v_uv;
 out float v_alpha;
 out vec2 v_tint;
@@ -25,7 +26,8 @@ void main() {
   gl_Position = vec4(p.x / u_res.x * 2.0 - 1.0, 1.0 - p.y / u_res.y * 2.0, 0.0, 1.0);
   float kind = u_glow > 0.0 ? u_glowKind : a_kind;
   v_uv = vec2((kind + a_corner.x) / u_kinds, a_corner.y);
-  v_alpha = u_glow > 0.0 ? a_alpha * a_tint.x * u_glow : a_alpha;
+  float hueGlow = a_tint.y < 0.5 ? u_hueGlow.x : a_tint.y < 1.5 ? u_hueGlow.y : u_hueGlow.z;
+  v_alpha = u_glow > 0.0 ? a_alpha * a_tint.x * u_glow * hueGlow : a_alpha;
   v_tint = a_tint;
 }`;
 
@@ -56,6 +58,8 @@ export interface GlyphLayer {
   setAtlas(atlas: HTMLCanvasElement, cell: number, kinds: number, ink: string): void;
   /** The three accent colors a character can be tinted toward. */
   setHues(first: string, second: string, third: string): void;
+  /** How much of the glow each of the three accent colors gets (1 all of it, 0 none). */
+  setHueGlows(first: number, second: number, third: number): void;
   /** Each character's top-left corner (device px) and sprite. */
   setGlyphs(x: Int32Array, y: Int32Array, kind: Uint8Array): void;
   /**
@@ -108,6 +112,8 @@ export function glyphLayer(canvas: HTMLCanvasElement): GlyphLayer | null {
   const uHue2 = uniform("u_hue2");
   const uGlow = uniform("u_glow");
   const uGlowKind = uniform("u_glowKind");
+  const uHueGlow = uniform("u_hueGlow");
+  gl.uniform3f(uHueGlow, 1, 1, 1);
   gl.uniform1i(uniform("u_atlas"), 0);
 
   const vao = gl.createVertexArray();
@@ -168,6 +174,11 @@ export function glyphLayer(canvas: HTMLCanvasElement): GlyphLayer | null {
       gl.uniform3f(uHue0, ...rgb(first, "#00b894"));
       gl.uniform3f(uHue1, ...rgb(second, "#4a433c"));
       gl.uniform3f(uHue2, ...rgb(third, "#087f83"));
+    },
+
+    setHueGlows(first, second, third) {
+      use();
+      gl.uniform3f(uHueGlow, first, second, third);
     },
 
     setGlyphs(x, y, kind) {

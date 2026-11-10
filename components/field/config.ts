@@ -77,11 +77,19 @@ export const FIELD = {
    * Flashes: now and then a whole line takes on one of the sculpture's sheet colors (--jade,
    * the brown --mobile-ink or --teal, picked in proportion to `colors`) and lets it go again,
    * rising and falling over `duration` s, its opacity reaching `alpha` at the peak, with a
-   * faint halo of the color around it (`glow`, as a share of the line's own opacity). On
+   * faint halo of the color around it (`glow`, as a share of the line's own opacity, times
+   * that color's share in `glows`: 0 gives it no halo). On
    * average one starts every `every` s somewhere on screen, so any one line flashes only every
    * few minutes. Drawn on the GPU only; held still with reduced motion.
    */
-  flash: { every: 4, duration: 1.9, alpha: 0.25, colors: { jade: 1, brown: 1, teal: 1 }, glow: 0.12 },
+  flash: {
+    every: 4,
+    duration: 1.9,
+    alpha: 0.25,
+    colors: { jade: 1, brown: 2, teal: 1 },
+    glow: 0.12,
+    glows: { jade: 1, brown: 0, teal: 1 },
+  },
 
   /**
    * Bursts: the pointer coming onto the "Cambrian explosion" link (anything marked
@@ -89,7 +97,7 @@ export const FIELD = {
    * opacity `alpha` and lasting `duration` s, their starts scattered over `spread` s. Another
    * can't start until `cooldown` s after the last.
    */
-  burst: { count: 24, alpha: 0.5, duration: 2.9, spread: 0.6, cooldown: 1.5 },
+  burst: { count: 14, alpha: 0.5, duration: 2.9, spread: 0.6, cooldown: 1.5 },
 
   /**
    * The share image (app/thumbnail): whether it has the background at all (`show`), and if so,

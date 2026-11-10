@@ -425,6 +425,8 @@ export function runField(
     glow = num("--field-glow", FIELD.flash.glow);
     spread = num("--field-spread", 1);
     layer?.setHues(hue("--jade"), hue("--mobile-ink"), hue("--teal"));
+    const lit = FIELD.flash.glows;
+    layer?.setHueGlows(lit.jade, lit.brown, lit.teal);
 
     trace();
     drawAtlas();

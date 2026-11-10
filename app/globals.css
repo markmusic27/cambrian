@@ -69,7 +69,7 @@
   --ink: #26251e;
   /* The two accent colors, on the sculpture's sheets. Both, with the brown --mobile-ink below,
      also flash now and then along a contour line. */
-  --jade: #00b894;
+  --jade: #ce3f52;
   --teal: #087f83;
 
   /* The arms, and the sheets' three text colors: teal, jade (one sheet, under the key
@@ -89,6 +89,10 @@
 
   /* Height of the mobile when it sits above the text on narrow screens. */
   --mobile-h: clamp(260px, 82vw, 440px);
+
+  /* How far the clear space around the text and the sculpture reaches, as a multiple of
+     FIELD.text and FIELD.art (components/field/config.ts). */
+  --field-spread: 1.12;
 }
 
 /*
@@ -101,7 +105,7 @@
   :root {
     --paper: #0f0e0b;
     --ink: #f2f0eb;
-    --jade: #2cc9a0;
+    --jade: #d86471;
     --teal: #5ab1b5;
 
     --mobile-wire: #b9b3a8;
@@ -112,10 +116,10 @@
 
     /* The background lines a little fainter than in light mode (FIELD.glyph.alpha, 0.12), and
        the flashes' glow a little softer (FIELD.flash.glow, 0.12): light on dark reads stronger. */
-    --field-alpha: 0.062;
+    --field-alpha: 0.054;
     --field-glow: 0.07;
     /* The clear space around the text and the sculpture reaching a little further. */
-    --field-spread: 1.15;
+    --field-spread: 1.3;
   }
 }
 
