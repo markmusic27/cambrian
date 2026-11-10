@@ -106,7 +106,7 @@ export default function Copy() {
           </ol>
 
           <p>
-            Together, these mean that testing a strange idea now costs a fraction of what it did even a few
+            Together, these mean that testing a new idea now costs a fraction of what it did even a few
             months ago. Directions that once needed a well-funded lab and years of infrastructure are now within
             reach of a small group with a good idea and the will to pursue it.
           </p>
