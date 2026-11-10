@@ -35,14 +35,15 @@ uniform sampler2D u_atlas;
 uniform vec3 u_ink;
 uniform vec3 u_hue0;
 uniform vec3 u_hue1;
+uniform vec3 u_hue2;
 uniform highp float u_glow; // highp, as in the vertex shader (they must match)
 in vec2 v_uv;
 in float v_alpha;
-in vec2 v_tint; // how far toward an accent color, and which (0 the first, 1 the second)
+in vec2 v_tint; // how far toward an accent color, and which (0, 1 or 2)
 out vec4 color;
 void main() {
   float a = texture(u_atlas, v_uv).a * v_alpha;
-  vec3 hue = mix(u_hue0, u_hue1, v_tint.y);
+  vec3 hue = v_tint.y < 0.5 ? u_hue0 : v_tint.y < 1.5 ? u_hue1 : u_hue2;
   vec3 ink = u_glow > 0.0 ? hue : mix(u_ink, hue, v_tint.x);
   color = vec4(ink * a, a);
 }`;
@@ -53,8 +54,8 @@ export interface GlyphLayer {
    * round glow), and the ink color.
    */
   setAtlas(atlas: HTMLCanvasElement, cell: number, kinds: number, ink: string): void;
-  /** The two accent colors a character can be tinted toward. */
-  setHues(first: string, second: string): void;
+  /** The three accent colors a character can be tinted toward. */
+  setHues(first: string, second: string, third: string): void;
   /** Each character's top-left corner (device px) and sprite. */
   setGlyphs(x: Int32Array, y: Int32Array, kind: Uint8Array): void;
   /**
@@ -104,6 +105,7 @@ export function glyphLayer(canvas: HTMLCanvasElement): GlyphLayer | null {
   const uInk = uniform("u_ink");
   const uHue0 = uniform("u_hue0");
   const uHue1 = uniform("u_hue1");
+  const uHue2 = uniform("u_hue2");
   const uGlow = uniform("u_glow");
   const uGlowKind = uniform("u_glowKind");
   gl.uniform1i(uniform("u_atlas"), 0);
@@ -161,10 +163,11 @@ export function glyphLayer(canvas: HTMLCanvasElement): GlyphLayer | null {
       gl.uniform3f(uInk, ...rgb(ink, "#26251e"));
     },
 
-    setHues(first, second) {
+    setHues(first, second, third) {
       use();
-      gl.uniform3f(uHue0, ...rgb(first, "#ee542f"));
+      gl.uniform3f(uHue0, ...rgb(first, "#00b894"));
       gl.uniform3f(uHue1, ...rgb(second, "#4a433c"));
+      gl.uniform3f(uHue2, ...rgb(third, "#087f83"));
     },
 
     setGlyphs(x, y, kind) {

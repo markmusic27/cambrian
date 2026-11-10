@@ -74,14 +74,14 @@ export const FIELD = {
   wake: { gain: 0.06, decay: 1.2, ahead: 10, spread: 0.9, alpha: 0.11, cell: 14 },
 
   /**
-   * Flashes: now and then a whole line takes on one of the sculpture's sheet colors (--orange,
-   * or the brown --mobile-ink for `brown` of them) and lets it go again, rising and falling
-   * over `duration` s, its opacity reaching `alpha` at the peak, with a faint halo of the
-   * color around it (`glow`, as a share of the line's own opacity). On average one starts
-   * every `every` s somewhere on screen, so any one line flashes only every few minutes. Drawn
-   * on the GPU only; held still with reduced motion.
+   * Flashes: now and then a whole line takes on one of the sculpture's sheet colors (--jade,
+   * the brown --mobile-ink or --teal, picked in proportion to `colors`) and lets it go again,
+   * rising and falling over `duration` s, its opacity reaching `alpha` at the peak, with a
+   * faint halo of the color around it (`glow`, as a share of the line's own opacity). On
+   * average one starts every `every` s somewhere on screen, so any one line flashes only every
+   * few minutes. Drawn on the GPU only; held still with reduced motion.
    */
-  flash: { every: 4, duration: 1.9, alpha: 0.25, brown: 0.5, glow: 0.12 },
+  flash: { every: 4, duration: 1.9, alpha: 0.25, colors: { jade: 1, brown: 1, teal: 1 }, glow: 0.12 },
 
   /**
    * Bursts: the pointer coming onto the "Cambrian explosion" link (anything marked

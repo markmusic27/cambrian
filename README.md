@@ -46,9 +46,11 @@ freedom that comes from working outside commercial pressure.
 
 ## Get in touch
 
-If you have a bet you want to test and Cambrian sounds appealing, we'd like to hear from you. You don't
-need to be at Stanford or in a lab. Labs and companies interested in sponsoring research or learning more
-are welcome too. Email us at [mmusic@stanford.edu](mailto:mmusic@stanford.edu).
+If you have a bet you want to test and Cambrian sounds appealing to you, we'd like to hear from you,
+whether or not you're at Stanford or in a lab. Labs and companies interested in sponsoring research or learning more
+about what we're up to are welcome too.
+
+Email us at [mmusic@stanford.edu](mailto:mmusic@stanford.edu).
 
 ## This repository
 
@@ -58,7 +60,7 @@ a Next.js site: one column of text beside an ASCII-art sculpture after Alexander
 The sculpture is a small physics simulation of a balanced mobile, printed in reinforcement-learning
 notation, that drifts in a slow air current and stirs when the cursor moves across it. Behind both, a
 contour map of a rolling terrain is printed in typewriter dashes and periods, clearing softly around the text
-and the sculpture. Gentle waves run along its lines, and now and then one flashes orange or brown.
+and the sculpture. Gentle waves run along its lines, and now and then one flashes jade, brown, or teal.
 
 ```bash
 npm install

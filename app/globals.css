@@ -65,17 +65,17 @@
      this ink at low opacity (components/field/), so they share its hue. */
   --paper: #fafaf8;
   --ink: #26251e;
-  /* The two accent colors, on the sculpture's sheets. The orange, with the brown --mobile-ink
-     below, also flashes now and then along a contour line. */
-  --orange: #ee542f;
+  /* The two accent colors, on the sculpture's sheets. Both, with the brown --mobile-ink below,
+     also flash now and then along a contour line. */
+  --jade: #00b894;
   --teal: #087f83;
 
-  /* The arms, and the sheets' three text colors: teal, an orange (one sheet, under the key
+  /* The arms, and the sheets' three text colors: teal, jade (one sheet, under the key
      "coral"), and a warm brown-gray (under the key "ink"). */
   --mobile-wire: #2b2a27;
   --mobile-ink: #4a433c;
   --mobile-teal: var(--teal);
-  --mobile-coral: var(--orange);
+  --mobile-coral: var(--jade);
   /* The strings (the thread and the hooks), set apart from the arms by color. */
   --mobile-string: #a8a39a;
   /* The page background, for the canvas. */

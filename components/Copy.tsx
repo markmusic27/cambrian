@@ -155,14 +155,13 @@ export default function Copy() {
           <Heading>Reach out</Heading>
 
           <p>
-            If you have a bet you want to test and Cambrian sounds appealing to you, we’d like to hear from you.
-            You don’t need to be at Stanford or in a lab. Email us at{" "}
-            <Link href="mailto:mmusic@stanford.edu">mmusic@stanford.edu</Link>.
+            If you have a bet you want to test and Cambrian sounds appealing to you, we’d like to hear from you,
+            whether or not you’re at Stanford or in a lab. Labs and companies interested in sponsoring research or
+            learning more about what we’re up to are welcome too.
           </p>
 
           <p>
-            If you’re a lab or company interested in sponsoring research or learning more about what we’re up
-            to, email us at <Link href="mailto:mmusic@stanford.edu">mmusic@stanford.edu</Link>.
+            Email us at <Link href="mailto:mmusic@stanford.edu">mmusic@stanford.edu</Link>.
           </p>
 
           <footer className="mt-12 text-[0.88em] text-ink/70">

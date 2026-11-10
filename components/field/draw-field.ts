@@ -404,7 +404,8 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
     canvas.height = Math.round(H * dpr);
     const css = getComputedStyle(document.documentElement);
     ink = css.getPropertyValue("--ink").trim() || ink;
-    layer?.setHues(css.getPropertyValue("--orange").trim(), css.getPropertyValue("--mobile-ink").trim());
+    const hue = (name: string) => css.getPropertyValue(name).trim();
+    layer?.setHues(hue("--jade"), hue("--mobile-ink"), hue("--teal"));
 
     trace();
     drawAtlas();
@@ -679,6 +680,13 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
   // How far the waves have run (radians), advanced each frame.
   let drift = 0;
 
+  /** A flash's color, in proportion to FIELD.flash.colors: 0 jade, 1 brown, 2 teal. */
+  function pickHue() {
+    const { jade, brown, teal } = FIELD.flash.colors;
+    const r = Math.random() * (jade + brown + teal);
+    return r < jade ? 0 : r < jade + brown ? 1 : 2;
+  }
+
   /** Now and then starts a flash on a line that's showing (one not cleared away). */
   function spark(dt: number) {
     const F = FIELD.flash;
@@ -688,8 +696,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
       if (ALPHA[i] < G.alpha * 0.5) continue;
       const line = LINE[i];
       if (flashes.some((f) => f.line === line)) continue;
-      const hue = Math.random() < F.brown ? 1 : 0;
-      flashes.push({ line, start: clock, hue, peak: F.alpha, length: F.duration });
+      flashes.push({ line, start: clock, hue: pickHue(), peak: F.alpha, length: F.duration });
       return;
     }
   }
@@ -710,8 +717,7 @@ export function runField(canvas: HTMLCanvasElement, { still: held = false } = {}
       taken.add(LINE[i]);
       made++;
       const start = clock + Math.random() * B.spread;
-      const hue = Math.random() < FIELD.flash.brown ? 1 : 0;
-      flashes.push({ line: LINE[i], start, hue, peak: B.alpha, length: B.duration });
+      flashes.push({ line: LINE[i], start, hue: pickHue(), peak: B.alpha, length: B.duration });
     }
   }
 

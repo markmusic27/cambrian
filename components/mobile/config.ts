@@ -54,7 +54,7 @@ const sheet = (shape: ShapeKind, size: number, color: ColorKey, extra: Partial<S
 });
 
 /*
- * The arrangement. Mostly brown-gray ("ink") and teal, with one orange ("coral").
+ * The arrangement. Mostly brown-gray ("ink") and teal, with one jade (under the key "coral").
  * Add or remove arms freely: balance points, inertia and springs are all derived.
  */
 export const DESIGN: RodSpec = rod({
