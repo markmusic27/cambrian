@@ -67,6 +67,5 @@ npm run dev     # http://localhost:3000
 
 The text is in `components/Copy.tsx`, the title and share image in `app/layout.tsx`, the colors in
 `app/globals.css`, the sculpture in `components/mobile/`, and the background in `components/field/` (each
-keeps its tuning knobs in `config.ts`). The page is set in Legitima where a local copy is available (in the
-gitignored `public/fonts-local/`, since the font isn't ours to serve) and in Times New Roman otherwise. The
-sculpture and the background are printed in CMU Typewriter.
+keeps its tuning knobs in `config.ts`). The page is set in Legitima, served from the committed
+`public/fonts-local/font.ttf` file. The sculpture and the background are printed in CMU Typewriter.
