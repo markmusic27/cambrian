@@ -112,7 +112,7 @@
 
     /* The background lines a little fainter than in light mode (FIELD.glyph.alpha, 0.12), and
        the flashes' glow a little softer (FIELD.flash.glow, 0.12): light on dark reads stronger. */
-    --field-alpha: 0.072;
+    --field-alpha: 0.062;
     --field-glow: 0.07;
     /* The clear space around the text and the sculpture reaching a little further. */
     --field-spread: 1.15;
