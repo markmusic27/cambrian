@@ -24,12 +24,12 @@ will to pursue it.
 
 ## The name
 
-The name comes from the [Cambrian explosion](https://en.wikipedia.org/wiki/Cambrian_explosion), when, over
-a short stretch of geological time, life went from simple, soft-bodied organisms to most of the animal body
-plans alive today. We think robots are nearing a similar moment. As one model learns to control whatever
-body it is given, and building that body gets cheap, the shape of a robot stops being a fixed bet. We want
-to help that happen. The point is not to commercialize our work, but to provide the space, resources, and
-people to explore it seriously.
+The name comes from the [Cambrian explosion](https://en.wikipedia.org/wiki/Cambrian_explosion), when a
+convergence of environmental factors let life go from simple organisms to most of the animal forms alive
+today over a short stretch of geological time. We think robotics is nearing a similar moment. The right
+factors are lining up for an explosion in both deployment and new form factors, built to serve all sorts of
+functions. We’re eager to help bring it about, with the resources to take the work seriously and the
+freedom that comes from working outside commercial pressure.
 
 ## Early directions
 
