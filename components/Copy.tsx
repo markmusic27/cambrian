@@ -76,7 +76,7 @@ export default function Copy() {
     <main className="page relative z-10 px-4 pt-14 pb-24 md:pt-[clamp(56px,12vh,128px)] md:pr-8 md:pl-[clamp(24px,6vw,96px)]">
       <article id="column" className="max-w-[620px] text-pretty [&_p]:mb-[1.05em]">
         <h1 className="mb-3 text-[2.15rem] leading-tight font-normal tracking-[-0.02em]">Cambrian</h1>
-        <div className="mb-7">A research workshop for people taking asymmetric bets in robot learning.</div>
+        <div className="mb-7">A research lab for people taking asymmetric bets in robot learning.</div>
         <hr className="mb-7 w-14 border-0 border-t border-current opacity-30" />
 
         {/* The body copy. */}
@@ -117,7 +117,7 @@ export default function Copy() {
               Cambrian explosion
             </Link>, when a
             convergence of environmental factors let life go from simple organisms to most of the animal forms
-            alive today over a short stretch of geological time. We think robotics is nearing a similar moment.
+            alive today over a short stretch of geological time. We think robotics is nearing its Cambrian explosion.
             The right factors are lining up for an explosion in both deployment and new form factors, built to
             serve all sorts of functions. We’re eager to help bring it about, with the resources to take the work
             seriously and the freedom that comes from working outside commercial pressure.

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { SITE_URL } from "./site";
 
-const description = "A research workshop for people taking asymmetric bets in robot learning.";
+const description = "A research lab for people taking asymmetric bets in robot learning.";
 // The page calls itself Cambrian; the tab and link previews use the fuller "Cambrian Robotics". (No
 // separator in it: iMessage cuts "Cambrian | " or "Cambrian: " off a title, taking it for the site
 // name when it matches the domain.)

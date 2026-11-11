@@ -4,7 +4,7 @@
 
 # Cambrian
 
-A research workshop for people taking asymmetric bets in robot learning.
+A research lab for people taking asymmetric bets in robot learning.
 
 We're a small group of engineers and roboticists exploring ideas that are newly within reach. Most of us
 are Stanford researchers who also work in labs like [ILIAD](https://iliad.stanford.edu/),
@@ -26,7 +26,7 @@ will to pursue it.
 
 The name comes from the [Cambrian explosion](https://en.wikipedia.org/wiki/Cambrian_explosion), when a
 convergence of environmental factors let life go from simple organisms to most of the animal forms alive
-today over a short stretch of geological time. We think robotics is nearing a similar moment. The right
+today over a short stretch of geological time. We think robotics is nearing its Cambrian explosion. The right
 factors are lining up for an explosion in both deployment and new form factors, built to serve all sorts of
 functions. We’re eager to help bring it about, with the resources to take the work seriously and the
 freedom that comes from working outside commercial pressure.
