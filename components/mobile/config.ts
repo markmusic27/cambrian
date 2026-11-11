@@ -279,7 +279,7 @@ export const VIEW = {
     wall: 1.6,
     shadow: 0.3,
     shadowKeep: 0.42,
-    noise: 0.03,
+    noise: 0,
   },
   wideArcLower: 0.29,
   shadow: {

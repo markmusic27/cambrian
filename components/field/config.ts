@@ -86,7 +86,7 @@ export const FIELD = {
     every: 4,
     duration: 1.9,
     alpha: 0.25,
-    colors: { rose: 1, brown: 2, teal: 1 },
+    colors: { rose: 1.2, brown: 2, teal: 0.8 },
     glow: 0.12,
     glows: { rose: 1, brown: 0, teal: 1 },
   },
